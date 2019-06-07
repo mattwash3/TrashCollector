@@ -141,8 +141,8 @@ namespace TrashCollector.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            ViewBag.Name = new SelectList(context.Roles.Where(u => !u.Name.Contains("Admin"))
-                                            .ToList(), "Name", "Name");
+            ViewBag.Name = new SelectList(context.Roles.Where(u => !u.Name.Contains("Admin")).ToList(), "Name", "Name");
+
             return View();
         }
 
@@ -155,7 +155,7 @@ namespace TrashCollector.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = null, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -169,10 +169,24 @@ namespace TrashCollector.Controllers
                     //Assign Role to user Here      
                     await this.UserManager.AddToRoleAsync(user.Id, model.UserRoles);
                     //Ends Here    
+                    // based on model.UserRoles
+                    // redirect to custoemrs create or employees create
+                    if (ModelState.IsValid)
+                    {
+                        if(model.UserRoles == "Customer")
+                        {
+                            return RedirectToAction("Create", "Customer");
+                        }
+                        else if(model.UserRoles == "Employee")
+                        {
+                            return RedirectToAction("Create", "Employee");
+                        }
+                    }
+
                     return RedirectToAction("Index", "Users");
                 }
-                ViewBag.Name = new SelectList(context.Roles.Where(u => !u.Name.Contains("Admin"))
-                                          .ToList(), "Name", "Name");
+                ViewBag.Name = new SelectList(context.Roles.Where(u => !u.Name.Contains("Admin")).ToList(), "Name", "Name");
+
                 AddErrors(result);
             }
 

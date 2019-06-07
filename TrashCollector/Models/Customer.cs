@@ -16,6 +16,19 @@ namespace TrashCollector.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
         [ForeignKey("Address")]
-        public string Zipcode { get; set; }
+        [Display(Name = "Address")]
+        public int AddressId { get; set; }
+        public Address Address { get; set; }
+        [Display(Name = "Weekly Pick Up Day")]
+        public string WeeklyPickUp { get; set; }
+        [Display(Name = "One Time Pick Up")]
+        public string OneTimePickUp { get; set; }
+        [Display(Name = "Suspend Pick Up Time Period")]
+        public string SuspendPickUp { get; set; }
+        [Display(Name = "Amount Due This Month")]
+        public int PickUpTotalFees { get; set; }
+        [ForeignKey("ApplicationUser")]
+        public string ApplicationId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

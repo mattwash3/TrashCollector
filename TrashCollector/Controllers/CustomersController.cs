@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -33,6 +34,7 @@ namespace TrashCollector.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Customer customer = db.Customers.Find(id);
+            ViewBag.AddressId = new SelectList(db.Addresses, "Id", "Street");
             if (customer == null)
             {
                 return HttpNotFound();
@@ -44,7 +46,8 @@ namespace TrashCollector.Controllers
         public ActionResult Create()
         {
             Customer customer = new Customer();
-            return View();
+            customer.Address = new Address();
+            return View(customer);
         }
 
         // POST: Customers/Create
@@ -52,10 +55,16 @@ namespace TrashCollector.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName")] Customer customer)
+        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,AddressId,Address,WeeklyPickUp,OneTimePickUp,SuspendPickUp")] Customer customer)
         {
             if (ModelState.IsValid)
             {
+                // ALSO ADD THE NEW ADDRESS! :)
+                var currentUserId = User.Identity.GetUserId();
+                db.Addresses.Add(customer.Address);
+                db.SaveChanges();
+                customer.AddressId = customer.Address.Id;
+                customer.ApplicationId = currentUserId;
                 db.Customers.Add(customer);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -72,6 +81,7 @@ namespace TrashCollector.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Customer customer = db.Customers.Find(id);
+            customer.Address = db.Addresses.Where(s => s.Id == customer.AddressId).SingleOrDefault();
             if (customer == null)
             {
                 return HttpNotFound();
@@ -84,11 +94,12 @@ namespace TrashCollector.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName")] Customer customer)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,AddressId,Address,WeeklyPickUp,OneTimePickUp,SuspendPickUp")] Customer customer)
         {
             if (ModelState.IsValid)
-            {
+            {               
                 db.Entry(customer).State = EntityState.Modified;
+                db.Entry(customer.Address).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -116,7 +127,9 @@ namespace TrashCollector.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Customer customer = db.Customers.Find(id);
+            Address addressToDelete = db.Addresses.Where(a => a.Id == customer.AddressId).FirstOrDefault();
             db.Customers.Remove(customer);
+            db.Addresses.Remove(addressToDelete);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

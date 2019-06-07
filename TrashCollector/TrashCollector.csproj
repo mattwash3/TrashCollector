@@ -162,14 +162,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Address.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AddressesController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -182,8 +180,17 @@
     <Compile Include="Migrations\201906051622015_InitialMigration.Designer.cs">
       <DependentUpon>201906051622015_InitialMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906062051531_UpdatedClassesAndTables.cs" />
+    <Compile Include="Migrations\201906062051531_UpdatedClassesAndTables.Designer.cs">
+      <DependentUpon>201906062051531_UpdatedClassesAndTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906071530014_CustomerInfoAdded.cs" />
+    <Compile Include="Migrations\201906071530014_CustomerInfoAdded.Designer.cs">
+      <DependentUpon>201906071530014_CustomerInfoAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -284,6 +291,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201906051622015_InitialMigration.resx">
       <DependentUpon>201906051622015_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906062051531_UpdatedClassesAndTables.resx">
+      <DependentUpon>201906062051531_UpdatedClassesAndTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906071530014_CustomerInfoAdded.resx">
+      <DependentUpon>201906071530014_CustomerInfoAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

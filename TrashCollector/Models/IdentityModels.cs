@@ -22,6 +22,7 @@ namespace TrashCollector.Models
     {
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Address> Addresses { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -32,6 +33,6 @@ namespace TrashCollector.Models
             return new ApplicationDbContext();
         }
 
-        public System.Data.Entity.DbSet<TrashCollector.Address> Addresses { get; set; }
+        
     }
 }

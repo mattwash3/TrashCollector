@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -28,6 +29,7 @@ namespace TrashCollector.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Employee employee = db.Employees.Find(id);
+            ViewBag.AddressId = new SelectList(db.Addresses, "Id", "Street");
             if (employee == null)
             {
                 return HttpNotFound();
@@ -38,7 +40,9 @@ namespace TrashCollector.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
-            return View();
+            Employee employee = new Employee();
+            employee.Address = new Address();
+            return View(employee);
         }
 
         // POST: Employees/Create
@@ -50,6 +54,11 @@ namespace TrashCollector.Controllers
         {
             if (ModelState.IsValid)
             {
+                var currentUserId = User.Identity.GetUserId();
+                db.Addresses.Add(employee.Address);
+                db.SaveChanges();
+                employee.AddressId = employee.Address.Id;
+                employee.ApplicationId = currentUserId;
                 db.Employees.Add(employee);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -66,6 +75,7 @@ namespace TrashCollector.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Employee employee = db.Employees.Find(id);
+            employee.Address = db.Addresses.Where(s => s.Id == employee.AddressId).SingleOrDefault();
             if (employee == null)
             {
                 return HttpNotFound();
@@ -78,11 +88,12 @@ namespace TrashCollector.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName")] Employee employee)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,AddressId")] Employee employee)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(employee).State = EntityState.Modified;
+                db.Entry(employee.Address).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -110,7 +121,9 @@ namespace TrashCollector.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Employee employee = db.Employees.Find(id);
+            Address addressToDelete = db.Addresses.Where(a => a.Id == employee.AddressId).FirstOrDefault();
             db.Employees.Remove(employee);
+            db.Addresses.Remove(addressToDelete);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
