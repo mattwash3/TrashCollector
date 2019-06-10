@@ -22,9 +22,11 @@ namespace TrashCollector.Models
         [Display(Name = "Weekly Pick Up Day")]
         public string WeeklyPickUp { get; set; }
         [Display(Name = "One Time Pick Up")]
-        public DateTime? OneTimePickUp { get; set; }                  //changed type to Datetime. need to do another migration.
-        [Display(Name = "Suspend Pick Up Time Period")]
-        public DateTime? SuspendPickUp { get; set; }                  //will datetime work for suspending days or does there need to be more code added to the controller?
+        public DateTime? OneTimePickUp { get; set; }                 
+        [Display(Name = "Suspend Pick Up Start Date")]
+        public DateTime? SuspendPickUpStart { get; set; }
+        [Display(Name = "Suspend Pick Up End Date")]
+        public DateTime? SuspendPickUpEnd { get; set; }
         [Display(Name = "Amount Due This Month")]
         public int PickUpTotalFees { get; set; }
         [ForeignKey("ApplicationUser")]
