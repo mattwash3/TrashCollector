@@ -13,7 +13,7 @@ namespace TrashCollector.Controllers
 {
     public class CustomersController : Controller
     {
-        public ApplicationDbContext db;
+        private ApplicationDbContext db;
 
         public CustomersController()
         {
@@ -55,7 +55,7 @@ namespace TrashCollector.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,AddressId,Address,WeeklyPickUp,OneTimePickUp,SuspendPickUp")] Customer customer)
+        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,AddressId,Address,WeeklyPickUp,OneTimePickUp,SuspendPickUpStart,SuspendPickUpEnd")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -94,7 +94,7 @@ namespace TrashCollector.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,AddressId,Address,WeeklyPickUp,OneTimePickUp,SuspendPickUp")] Customer customer)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,AddressId,Address,WeeklyPickUp,OneTimePickUp,SuspendPickUpStart,SuspendPickUpEnd")] Customer customer)
         {
             if (ModelState.IsValid)
             {               
@@ -132,6 +132,44 @@ namespace TrashCollector.Controllers
             db.Addresses.Remove(addressToDelete);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // GET: Customers/Edit/5
+        public ActionResult SpecialPickups(int? id)
+
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Customer customer = db.Customers.Find(id);
+            customer.Address = db.Addresses.Where(s => s.Id == customer.AddressId).SingleOrDefault();
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+            return View(customer);
+        }
+
+        // POST: Customers/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SpecialPickups([Bind(Include = "Id,ApplicationId,ApplicationUser,FirstName,LastName,AddressId,Address,WeeklyPickUp,OneTimePickUp,SuspendPickUpStart,SuspendPickUpEnd")] Customer customer)
+        {
+            customer.ApplicationId = User.Identity.GetUserId();
+            if (ModelState.IsValid)
+            {
+                db.Entry(customer).State = EntityState.Modified;
+                db.Entry(customer.Address).State = EntityState.Modified;
+
+                // consider editing "superhero/player tracker" style
+
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(customer);
         }
 
         protected override void Dispose(bool disposing)

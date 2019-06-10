@@ -13,7 +13,7 @@ namespace TrashCollector.Controllers
 {
     public class EmployeesController : Controller
     {
-        private ApplicationDbContext db;              //originally private, made public. check on whether or not it needs to public/private
+        private ApplicationDbContext db;             
 
         public EmployeesController()
         {
