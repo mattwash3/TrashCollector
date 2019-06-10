@@ -13,7 +13,12 @@ namespace TrashCollector.Controllers
 {
     public class EmployeesController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        public ApplicationDbContext db;              //originally private, made public. check on whether or not it needs to public/private
+
+        public EmployeesController()
+        {
+            db = new ApplicationDbContext();
+        }
 
         // GET: Employees
         public ActionResult Index()
@@ -50,7 +55,7 @@ namespace TrashCollector.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName")] Employee employee)
+        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,AddressId,Address")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +93,7 @@ namespace TrashCollector.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,AddressId")] Employee employee)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,AddressId,Address")] Employee employee)
         {
             if (ModelState.IsValid)
             {

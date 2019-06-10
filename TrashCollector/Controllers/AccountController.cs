@@ -175,18 +175,15 @@ namespace TrashCollector.Controllers
                     {
                         if(model.UserRoles == "Customer")
                         {
-                            return RedirectToAction("Create", "Customer");
+                            return RedirectToAction("Create", "Customers");
                         }
                         else if(model.UserRoles == "Employee")
                         {
-                            return RedirectToAction("Create", "Employee");
+                            return RedirectToAction("Create", "Employees");
                         }
                     }
-
-                    return RedirectToAction("Index", "Users");
                 }
                 ViewBag.Name = new SelectList(context.Roles.Where(u => !u.Name.Contains("Admin")).ToList(), "Name", "Name");
-
                 AddErrors(result);
             }
 
