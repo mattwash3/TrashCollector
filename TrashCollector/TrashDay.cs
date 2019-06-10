@@ -14,11 +14,11 @@ namespace TrashCollector
         TrashDay friday = new TrashDay("Friday");
         List<TrashDay> WeeklyPickUp = new List<TrashDay>();
         
-        WeeklyPickUp.Add(monday);
-        WeeklyPickUp.Add(tuesday);
-        WeeklyPickUp.Add(wednesday);
-        WeeklyPickUp.Add(thursday);
-        WeeklyPickUp.Add(friday);
+        //WeeklyPickUp.Add(monday);
+        //WeeklyPickUp.Add(tuesday);
+        //WeeklyPickUp.Add(wednesday);
+        //WeeklyPickUp.Add(thursday);
+        //WeeklyPickUp.Add(friday);
 
         public TrashDay(string v)
         {
