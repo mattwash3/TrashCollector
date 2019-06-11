@@ -27,6 +27,8 @@ namespace TrashCollector.Models
         public DateTime? SuspendPickUpStart { get; set; }
         [Display(Name = "Suspend Pick Up End Date")]
         public DateTime? SuspendPickUpEnd { get; set; }
+        [Display(Name = "Pick Up Confirmation")]
+        public bool ConfirmPickup { get; set; }
         [Display(Name = "Amount Due This Month")]
         public int PickUpTotalFees { get; set; }
         [ForeignKey("ApplicationUser")]

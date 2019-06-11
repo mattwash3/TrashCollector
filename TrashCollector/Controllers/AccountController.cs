@@ -72,6 +72,10 @@ namespace TrashCollector.Controllers
         {
             if (!ModelState.IsValid)
             {
+                if (this.User.IsInRole("Customer"))
+                    return RedirectToAction("Details", "Customer");
+                else if (this.User.IsInRole("Employee"))
+                    return RedirectToAction("Index", "Employee");
                 return View(model);
             }
 

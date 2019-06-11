@@ -200,6 +200,10 @@
     <Compile Include="Migrations\201906101234004_CustomerSuspendDates.Designer.cs">
       <DependentUpon>201906101234004_CustomerSuspendDates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906102056598_CustomerConfirmPickup.cs" />
+    <Compile Include="Migrations\201906102056598_CustomerConfirmPickup.Designer.cs">
+      <DependentUpon>201906102056598_CustomerConfirmPickup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs" />
@@ -319,6 +323,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906101234004_CustomerSuspendDates.resx">
       <DependentUpon>201906101234004_CustomerSuspendDates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906102056598_CustomerConfirmPickup.resx">
+      <DependentUpon>201906102056598_CustomerConfirmPickup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
