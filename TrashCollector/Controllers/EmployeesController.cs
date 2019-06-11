@@ -140,36 +140,13 @@ namespace TrashCollector.Controllers
 
         // GET: Customers/Edit/5
         public ActionResult ConfirmPickup(int? id)
-        {
-            
+        {            
             Customer customer = db.Customers.Find(id);
             customer.PickUpTotalFees += 25;
             db.Entry(customer).State = EntityState.Modified;
             db.SaveChanges();
-            //customer. = db.Addresses.Where(s => s.Id == customer.AddressId).Single();
-
-            return View("Index");
-        }
-
-        // POST: Customers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ConfirmPickup([Bind(Include = "Id,ApplicationId,ApplicationUser,FirstName,LastName,AddressId,Address,WeeklyPickUp,OneTimePickUp,SuspendPickUpStart,SuspendPickUpEnd")] Customer customer)
-        {
-            customer.ApplicationId = User.Identity.GetUserId();
-            if (ModelState.IsValid)
-            {
-                
-                db.Entry(customer.Address).State = EntityState.Modified;
-
-                // consider editing "superhero/player tracker" style
-
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(customer);
+            return RedirectToAction("Index");
+            //return View(customer);
         }
 
         protected override void Dispose(bool disposing)
